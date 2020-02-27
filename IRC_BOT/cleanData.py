@@ -5,20 +5,33 @@ def readData(dataList):
             if line.lower() not in dataList:
                 dataList.append(line.lower())
 
-def writeData(dataList):
-    with open('BANNED_WORDS','w') as f:
+###############################################
+
+def writeData(dataList, filename):
+    with open(filename,'w') as f:
         for word in dataList:
             f.write(word)
 
-entries = []
 
-readData(dataList=entries)
-entries.sort()
 
-leet = []
+###############################################
 replacements = ( ('a','4'), ('b','8'), ('c','('), ('e','3'), ('g','9'),
                  ('h','#'), ('l','1'), ('o','0'), ('t','+'), ('s','5'),
                  ('t','7'), ('z','2') )
+entries = []
+leet = []
+
+#read in data
+readData(dataList=entries)
+
+#sort
+entries.sort()
+
+#update the main file without duplicates in alphabetical order
+writeData(dataList=entries, filename="BANNABLE_WORDS")
+
+
+#generate all the leetspeach phrases
 for word in entries:
     new_word = word
     leet.append(new_word)
@@ -28,19 +41,5 @@ for word in entries:
             leet.append(new_word)
 
 
-# for index,word in enumerate(entries):
-#     print(word + " " + leet[index])
-#
-# for word in entries:
-#     print(word)
-#
-# leet.sort()
-#
-# for word in leet:
-#     if word not in entries:
-#         entries.append(word.lower())
-
-# for word in entries:
-    # print(word)
-writeData(dataList=leet)
-# writeData(dataList=leet)
+#update the actual banned list
+writeData(dataList=leet, filename="BANNED_WORDS")
