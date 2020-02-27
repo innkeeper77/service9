@@ -1,3 +1,8 @@
+bot.py is the main program. Runs with python3.
+IRC_bot.py is the irc class that holds all the details.
+This bot currently checks each message received in the chat for the list of banned words and if the 
+'chatter' uses banned words, reprimands them.
+
 cleanData.py reads from BANNABLE_WORDS, removes duplicates, generates associated leetspeech phrases, 
 and writes out to BANNED_WORDS. The actual bot reads from BANNED_WORDS. If you want to add new phrases
 or words to ban, add them to the end of BANNABLE_WORDS and then run cleanData.py. They will be sorted,
