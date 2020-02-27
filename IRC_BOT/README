@@ -1,0 +1,4 @@
+cleanData.py reads from BANNABLE_WORDS, removes duplicates, generates associated leetspeech phrases, 
+and writes out to BANNED_WORDS. The actual bot reads from BANNED_WORDS. If you want to add new phrases
+or words to ban, add them to the end of BANNABLE_WORDS and then run cleanData.py. They will be sorted,
+added, and associated leetspeach words will be added. If you have any questions please reach out to me.
