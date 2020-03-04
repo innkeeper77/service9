@@ -1,33 +1,33 @@
 from IRC_bot import *
+from functions import *
+import time
 
-
-
-def readData():
-    dataList = []
-    with open('BANNED_WORDS') as f:
-        for line in f:
-            if line.lower() not in dataList:
-                dataList.append(line.rstrip().lower())
-    return dataList
-
-
-## IRC Config
-BANNED_WORDS = readData()
-server = "chat.freenode.net"
+#################### IRC CONFIG ####################
 port = 6666
-channel = "#kaestchnnel"
-botnick = "CHARLIE1995"
-botnickpass = "yourpassword"
-botpass = "<%= @yourpassword_password %>"
+server = "chat.freenode.net"
+channel = "#kaestChannels"
+botnick = "FooBot"
+botnickpass = "apassword"
+botpass = "<%= @apassword_password %>"
+#################### IRC CONFIG ####################
+
+
+
+################ IRC INITIALIZATION ################
 irc = IRC()
 irc.connect(server, port, channel, botnick, botpass)
-irc.send(channel, "Hello World")
+irc.send(channel, f"{botnick} logging on")
+################ IRC INITIALIZATION ################
+
+
+BANNED_WORDS = readData()
+BOOT = False
+listen = False
+
 
 while True:
     text = irc.get_response()
     print(text)
 
-    for word in BANNED_WORDS:
-        if word in text:
-            irc.send(channel, "Your language is a royal blue. I'm going to need you to take it down to a powder blue.")
-            break
+    if checkSwear(BANNED_WORDS,text):
+        irc.send(channel, "OOPS")
