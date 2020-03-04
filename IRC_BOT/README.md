@@ -6,14 +6,16 @@ This bot currently checks each message received in the chat for the list of bann
   * To Run: 'python3 bot.py'
 * [IRC_bot.py](./IRC_bot.py)
   * IRC class handles all discussion with the server.
-* [BANNABLE_WORDS](./BANNABLE_WORDS)
-  * List of words that can be banned.
-* [BANNED_WORDS](./BANNED_WORDS)
-  * The list included in /BANNABLE_WORDS and all associated leet speach.
 * [functions.py](./functions.py)
   * Contains auxillary functions that are used in /bot.py.
 * [workers.py](./workers.py)
   * Contains class definitions for all multithreaded workers.
+* [cleanData.py](./cleanData.py)
+   * Simple script to clean data and generate a list of words to be banned
+* [BANNABLE_WORDS](./BANNABLE_WORDS)
+  * List of words that can be banned.
+* [BANNED_WORDS](./BANNED_WORDS)
+  * The list included in BANNABLE_WORDS and all associated leet speach.
 
 ## Housekeeping
 cleanData.py reads from BANNABLE_WORDS, removes duplicates, generates associated leetspeech phrases, 
