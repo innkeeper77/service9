@@ -1,33 +1,63 @@
-from IRC_bot import *
+""" Trystan Kaes
+    IRC bot
+    March 4, 2020 """
+import re
+import time
+import irc
+import workers
+import functions as func
+
+
+#################### IRC CONFIG ####################
+PORT = 6666
+SERVER = "chat.freenode.net"
+CHANNEL = "#kaestChannels"
+BOTNICK = "FooBot"
+#################### IRC CONFIG ####################
+
+
+################ IRC INITIALIZATION ################
+IRC = irc.IRC()
+IRC.connect(SERVER, PORT, CHANNEL, BOTNICK)
+IRC.send(CHANNEL, f"{BOTNICK} logging on")
+################ IRC INITIALIZATION ################
+
+
+################ Print Chat Connection Info ################
+RESPONSE = ""
+while RESPONSE.find(f"JOIN {CHANNEL}") < 0:
+    RESPONSE = IRC.get_response()
+    print(RESPONSE + "\n")
+################ Print Chat Connection Info ################
 
 
 
-def readData():
-    dataList = []
-    with open('BANNED_WORDS') as f:
-        for line in f:
-            if line.lower() not in dataList:
-                dataList.append(line.rstrip().lower())
-    return dataList
+################ WORKER INITIALIZATION ################
+MESSAGE_CACHE = [] # Initialize the autotracking message queue
+CLEANER = workers.MessageQueueCleaner(1, MESSAGE_CACHE)
+TALKER_DICT = {} # Initialize talker dictionary
+TRACKER = workers.UserTracker(2, MESSAGE_CACHE, TALKER_DICT)
+################ WORKER INITIALIZATION ################
 
+BANNED_WORDS = func.read_data("BANNED_WORDS")
 
-## IRC Config
-BANNED_WORDS = readData()
-server = "chat.freenode.net"
-port = 6666
-channel = "#kaestchnnel"
-botnick = "CHARLIE1995"
-botnickpass = "yourpassword"
-botpass = "<%= @yourpassword_password %>"
-irc = IRC()
-irc.connect(server, port, channel, botnick, botpass)
-irc.send(channel, "Hello World")
-
+################ MAIN PROCESS EXECUTION ################
 while True:
-    text = irc.get_response()
-    print(text)
+    RESPONSE = IRC.get_response()
+    print(RESPONSE)
 
-    for word in BANNED_WORDS:
-        if word in text:
-            irc.send(channel, "Your language is a royal blue. I'm going to need you to take it down to a powder blue.")
-            break
+    # Check for swearing
+    if func.test_match(BANNED_WORDS, RESPONSE):
+        BAD_USER = re.findall(r'(?<=\:)(.*?)(?=\!)', RESPONSE) #extract username
+        if len(BAD_USER) > 0:
+            IRC.send(CHANNEL, f"clean it up @{BAD_USER[0]}!")
+
+    # Check for spam
+    if func.test_max(TALKER_DICT, 5):
+        BAD_USER = re.findall(r'(?<=\:)(.*?)(?=\!)', RESPONSE) #extract username
+        if len(BAD_USER) > 0:
+            IRC.send(CHANNEL, f"Settle Down @{BAD_USER[0]}!")
+
+        #store message in cache
+    MESSAGE_CACHE.append([time.process_time(), RESPONSE.rstrip()])
+################ MAIN PROCESS EXECUTION ################
