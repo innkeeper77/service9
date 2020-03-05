@@ -1,5 +1,5 @@
 ## IRC BOT
-This bot currently checks each message received in the chat for the list of banned words and if the 'chatter' uses banned words, reprimands them. It also tracks a trailing time range of chat messages and updates the list in real time.
+This bot currently checks each message received in the chat for the list of banned words and if the 'chatter' uses banned words, reprimands them. It also tracks a trailing time range of chat messages and updates the list in real time. If the user spams chat, it reprimands them.
 
 ### File Structure
 * [bot.py](./bot.py)
