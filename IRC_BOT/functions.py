@@ -1,3 +1,4 @@
+
 def readData():
     dataList = []
     with open('BANNED_WORDS') as f:
@@ -8,6 +9,12 @@ def readData():
 
 def checkSwear(list, text):
     for word in list:
-        if word in text:
+        if text.find(word) > 0:
+            return True
+    return False
+
+def checkSpam(users):
+    for user in users:
+        if users[user] > 5:
             return True
     return False

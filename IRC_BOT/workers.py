@@ -1,10 +1,9 @@
 import threading
-import re as regex
 import time
-
+import re
 
 class messageQueueCleaner(object):
-""" messageQueueCleaner updates the message queue to only hold a specified time range """
+    """ messageQueueCleaner updates the message queue to only hold a specified time range """
     def __init__(self, interval, queue):
         """ constructor function """
         self.interval = interval
@@ -24,12 +23,12 @@ class messageQueueCleaner(object):
             time.sleep(self.interval)
 
 class userTracker(object):
-""" userTracker constructs a list of users that are talking in real time """
-    def __init__(self, interval, queue, usernameList):
+    """ userTracker constructs a list of users that are talking in real time """
+    def __init__(self, interval, queue, usernameDict):
         """ constructor function """
         self.interval = interval
         self.queue = queue
-        self.usernameList = usernameList
+        self.usernameDict = usernameDict
         thread = threading.Thread(target=self.run, args=())
         thread.daemon = True
         thread.start()
@@ -38,9 +37,17 @@ class userTracker(object):
         """ Process to run at specified intervals """
         while True:
             print("Updating talker list usernames.")
+            self.usernameDict.clear()
             if len(self.queue) > 0:
-                self.usernameList.clear()
                 for talker in self.queue:
-                        #extract the username from all messages in queue and store
-                    self.usernameList.append(regex.findall(r'(?<=\:)(.*?)(?=\!)', talker[1]))
+                    if(len(re.findall(r'(?<=\:)(.*?)(?=\!)', talker[1])) > 0):
+                        user_name = re.findall(r'(?<=\:)(.*?)(?=\!)', talker[1])[0]
+                        if user_name in self.usernameDict:
+                                #extract the username from all messages in queue and store
+                            self.usernameDict[user_name] += 1;
+                        else:
+                                #extract the username from all messages in queue and store
+                            self.usernameDict[user_name] = int(1);
+
+            print(self.usernameDict)
             time.sleep(self.interval)
