@@ -7,7 +7,7 @@ This bot currently checks each message received in the chat for the list of bann
 * [IRC_bot.py](./IRC_bot.py)
   * IRC class handles all discussion with the server.
 * [functions.py](./functions.py)
-  * Contains auxillary functions that are used in /bot.py.
+  * Contains auxillary functions that are used in bot.py.
 * [workers.py](./workers.py)
   * Contains class definitions for all multithreaded workers.
 * [cleanData.py](./cleanData.py)
