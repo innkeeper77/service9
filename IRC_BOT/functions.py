@@ -1,20 +1,24 @@
+""" Contains auxillary functions that are used in bot.py. """
 
-def readData():
-    dataList = []
-    with open('BANNED_WORDS') as f:
-        for line in f:
-            if line.lower() not in dataList:
-                dataList.append(line.rstrip().lower())
-    return dataList
+def read_data(filename):
+    """ read a list of words from a file """
+    data_list = []
+    with open(filename) as file:
+        for line in file:
+            if line.lower() not in data_list:
+                data_list.append(line.rstrip().lower())
+    return data_list
 
-def checkSwear(list, text):
-    for word in list:
-        if text.find(word) > 0:
+def test_match(word_list, text):
+    """ Test list of words against text for matches """
+    for word in word_list:
+        if text.lower().find(word) > 0:
             return True
     return False
 
-def checkSpam(users):
-    for user in users:
-        if users[user] > 5:
+def test_max(str_int_dict, max_value):
+    """ Check whether an element in the dictionary has the max value """
+    for element in str_int_dict:
+        if str_int_dict[element] > max_value:
             return True
     return False
