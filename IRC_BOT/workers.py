@@ -16,7 +16,7 @@ class MessageQueueCleaner():
     def run(self):
         """ Process to run at specified intervals """
         while True:
-            print(f"Cleaning the queue of size {len(self.queue)} in background.")
+            # print(f"Cleaning the queue of size {len(self.queue)} in background.")
                 #if the oldest message is out of range, delete it
             while(len(self.queue) > 0 and time.process_time() - self.queue[0][0] > 0.01):
                 self.queue.pop(0)
@@ -37,7 +37,7 @@ class UserTracker():
     def run(self):
         """ Process to run at specified intervals """
         while True:
-            print("Updating talker list usernames.")
+            # print("Updating talker list usernames.")
             self.username_dict.clear()
             if len(self.queue) > 0:
                 #count how many messages have been sent per user in queue
